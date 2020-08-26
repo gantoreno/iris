@@ -15,7 +15,7 @@ To create a network and view its architecture, use the example code below and pl
 #include "../include/iris.h"
 
 int main(int argc, char **argv) {
-    iris::Network inet = new iris::Network({3, 2, 3});
+    iris::Network inet = iris::Network({3, 2, 3});
 
     inet.describe();
 
