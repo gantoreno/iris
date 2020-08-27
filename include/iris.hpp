@@ -38,14 +38,16 @@ namespace iris {
         int rows;
         int cols;
         bool isRandom;
+        
         vector<vector<double>> values;
     public:
         Matrix(int rows, int cols, bool isRandom);
         
         string getId();
  
-        Matrix *multiply(Matrix *m);
-        Matrix *transpose();
+        Matrix multiply(Matrix m);
+        Matrix transpose();
+       
         vector<double> vectorize();
 
         double getCols();
@@ -62,25 +64,20 @@ namespace iris {
         string id;
         
         int size;
-        vector<Neuron *> neurons;
-        Matrix *neuronMatrix;
-        Matrix *activatedNeuronMatrix;
-        Matrix *derivedNeuronMatrix;
-    
-        void generateNeuronMatrix();
-        void generateActivatedNeuronMatrix();
-        void generateDerivedNeuronMatrix();
+        
+        vector<Neuron> neurons;
     public:
         Layer(int size);
     
         string getId();
         
         int getSize();
-        vector<Neuron *> getNeurons();
+        
+        vector<Neuron> getNeurons();
     
-        Matrix *getNeuronMatrix();
-        Matrix *getActivatedNeuronMatrix();
-        Matrix *getDerivedNeuronMatrix();
+        Matrix getNeuronMatrix();
+        Matrix getActivatedNeuronMatrix();
+        Matrix getDerivedNeuronMatrix();
     
         void setValues(vector<double> values);
      
@@ -92,21 +89,24 @@ namespace iris {
         string id; 
        
         int depth; 
+        
         vector<int> topology;
         vector<double> input;
-        vector<Layer *> layers; 
-        vector<Matrix *> weights; 
+        vector<Layer> layers; 
+        vector<Matrix> weights; 
     public:
         Network(vector<int> topology);
     
         string getId();
 
         int getDepth();
+        
         vector<int> getTopology();
-        vector<Layer *> getLayers();
-        vector<Matrix *> getWeights();
+        vector<Layer> getLayers();
+        vector<Matrix> getWeights();
 
         void setInput(vector<double> input);
+       
         void feedForward();        
 
         void describe(int level = 0);

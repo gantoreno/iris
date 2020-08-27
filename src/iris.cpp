@@ -6,6 +6,7 @@
 #include "../include/iris.hpp"
 
 using namespace std;
+using namespace iris;
 
 /**
  * +-------+
@@ -13,7 +14,7 @@ using namespace std;
  * +-------+
  */
 
-string iris::Utils::generateId() {
+string Utils::generateId() {
     random_device rd;
     mt19937 gen(rd());
     uniform_int_distribution<> dis(0, 15);
@@ -55,7 +56,7 @@ string iris::Utils::generateId() {
     return ss.str();
 }
 
-double iris::Utils::generateRandomNumber() {
+double Utils::generateRandomNumber() {
     random_device rd;
     mt19937 gen(rd());
     uniform_real_distribution<> dis(0, 1);
@@ -69,46 +70,46 @@ double iris::Utils::generateRandomNumber() {
  * +--------+
  */
 
-iris::Neuron::Neuron(double value) {
-    this->id = iris::Utils::generateId();
+Neuron::Neuron(double value) {
+    this->id = Utils::generateId();
     this->rawValue = value;
 
     this->activate();
     this->derive();
 }
 
-void iris::Neuron::activate() {
+void Neuron::activate() {
     this->activatedValue = this->rawValue / (1 + fabs(this->rawValue));
 }
 
-void iris::Neuron::derive() {
+void Neuron::derive() {
     this->derivedValue = 1  / pow(1 - fabs(this->activatedValue), 2);
 }
 
-string iris::Neuron::getId() {
+string Neuron::getId() {
     return this->id;
 }
 
-double iris::Neuron::getRawValue() {
+double Neuron::getRawValue() {
     return this->rawValue;
 }
 
-double iris::Neuron::getActivatedValue() {
+double Neuron::getActivatedValue() {
     return this->activatedValue;
 }
 
-double iris::Neuron::getDerivedValue() {
+double Neuron::getDerivedValue() {
     return this->derivedValue;
 }
 
-void iris::Neuron::setValue(double value) {
+void Neuron::setValue(double value) {
     this->rawValue = value;
     
     this->activate();
     this->derive();
 }
 
-void iris::Neuron::describe(int level) {
+void Neuron::describe(int level) {
     for (int i = 0; i < level; i++) {
         cout << "\t";
     }
@@ -152,8 +153,8 @@ void iris::Neuron::describe(int level) {
  * +--------+
  */
 
-iris::Matrix::Matrix(int rows, int cols, bool isRandom) {
-    this->id = iris::Utils::generateId();
+Matrix::Matrix(int rows, int cols, bool isRandom) {
+    this->id = Utils::generateId();
     this->rows = rows;
     this->cols = cols;
     this->isRandom = isRandom;
@@ -163,7 +164,7 @@ iris::Matrix::Matrix(int rows, int cols, bool isRandom) {
         
         for (int j = 0; j < cols; j++) {
             if (isRandom) {
-                v.push_back(iris::Utils::generateRandomNumber());
+                v.push_back(Utils::generateRandomNumber());
             } else {
                 v.push_back(0.0);
             }
@@ -173,19 +174,19 @@ iris::Matrix::Matrix(int rows, int cols, bool isRandom) {
     }
 }
 
-string iris::Matrix::getId() {
+string Matrix::getId() {
     return this->id;
 }
 
-iris::Matrix *iris::Matrix::multiply(iris::Matrix *m) {
-    iris::Matrix *result = new iris::Matrix(this->getRows(), m->getCols(), false);
+Matrix Matrix::multiply(Matrix m) {
+    Matrix result = Matrix(this->getRows(), m.getCols(), false);
 
     for (int i = 0; i < this->getRows(); i++) {
-        for (int j = 0; j < m->getCols(); j++) {
-            for (int k = 0; k < m->getRows(); k++) {
-                double value = this->getValue(i, k) * m->getValue(k, j);
+        for (int j = 0; j < m.getCols(); j++) {
+            for (int k = 0; k < m.getRows(); k++) {
+                double value = this->getValue(i, k) * m.getValue(k, j);
                 
-                result->setValue(i, j, result->getValue(i, j) + value);
+                result.setValue(i, j, result.getValue(i, j) + value);
             }
         }
     }
@@ -193,20 +194,20 @@ iris::Matrix *iris::Matrix::multiply(iris::Matrix *m) {
     return result;
 }
 
-iris::Matrix *iris::Matrix::transpose() {
-    iris::Matrix *m = new iris::Matrix(this->getCols(), this->getRows(), false);
+Matrix Matrix::transpose() {
+    Matrix m = Matrix(this->getCols(), this->getRows(), false);
 
     for (int i = 0; i < this->getRows(); i++) {
         for (int j = 0; j < this->getCols(); j++) {
-            m->setValue(j, i, this->getValue(i, j));
+            m.setValue(j, i, this->getValue(i, j));
         }
     }
 
     return m;
 }
 
-vector<double> iris::Matrix::vectorize() {
-    vector<double> result = {};
+vector<double> Matrix::vectorize() {
+    vector<double> result;
 
     for (int i = 0; i < this->getRows(); i++) {
         for (int j = 0; j < this->getCols(); j++) {
@@ -217,22 +218,22 @@ vector<double> iris::Matrix::vectorize() {
     return result;
 }
 
-double iris::Matrix::getCols() {
+double Matrix::getCols() {
     return this->cols;
 }
-double iris::Matrix::getRows() {
+double Matrix::getRows() {
     return this->rows;
 }
 
-void iris::Matrix::setValue(int row, int col, double value) {
+void Matrix::setValue(int row, int col, double value) {
     this->values.at(row).at(col) = value;
 }
 
-double iris::Matrix::getValue(int row, int col) {
+double Matrix::getValue(int row, int col) {
     return this->values.at(row).at(col);
 }
 
-void iris::Matrix::describe(int level) { 
+void Matrix::describe(int level) { 
     for (int i = 0; i < level; i++) {
         cout << "\t";
     }
@@ -287,78 +288,64 @@ void iris::Matrix::describe(int level) {
  * +-------+
  */
 
-iris::Layer::Layer(int size) {
-    this->id = iris::Utils::generateId();
+Layer::Layer(int size) {
+    this->id = Utils::generateId();
     this->size = size;
 
-    for (int i = 0; i < size; i++) {
-        this->neurons.push_back(new Neuron(0.0));
+    for (int i = 0; i < this->getSize(); i++) {
+        this->neurons.push_back(Neuron(0.0));
     }
-
-    this->generateNeuronMatrix();
-    this->generateActivatedNeuronMatrix();
-    this->generateDerivedNeuronMatrix();
 }
 
-string iris::Layer::getId() {
+string Layer::getId() {
     return this->id;
 }
 
-int iris::Layer::getSize() {
+int Layer::getSize() {
     return this->size;
 }
 
-vector<iris::Neuron *> iris::Layer::getNeurons() {
+vector<Neuron> Layer::getNeurons() {
     return this->neurons;
 }
 
-void iris::Layer::generateNeuronMatrix() {
-    this->neuronMatrix = new iris::Matrix(1, this->getSize(), false);
+Matrix Layer::getNeuronMatrix() {
+    Matrix neuronMatrix = Matrix(1, this->getSize(), false);
 
     for (int i = 0; i < this->getSize(); i++) {
-        this->neuronMatrix->setValue(0, i, this->getNeurons().at(i)->getRawValue());
+        neuronMatrix.setValue(0, i, this->getNeurons().at(i).getRawValue());
     }
+
+    return neuronMatrix;
 }
 
-void iris::Layer::generateActivatedNeuronMatrix() {
-    this->activatedNeuronMatrix = new iris::Matrix(1, this->getSize(), false);
+Matrix Layer::getActivatedNeuronMatrix() {
+    Matrix activatedNeuronMatrix = Matrix(1, this->getSize(), false);
 
     for (int i = 0; i < this->getSize(); i++) {
-        this->activatedNeuronMatrix->setValue(0, i, this->getNeurons().at(i)->getActivatedValue());
+        activatedNeuronMatrix.setValue(0, i, this->getNeurons().at(i).getActivatedValue());
     }
+
+    return activatedNeuronMatrix;
 }
 
-void iris::Layer::generateDerivedNeuronMatrix() {
-    this->derivedNeuronMatrix = new iris::Matrix(1, this->getSize(), false);
+Matrix Layer::getDerivedNeuronMatrix() {
+    Matrix derivedNeuronMatrix = Matrix(1, this->getSize(), false);
 
     for (int i = 0; i < this->getSize(); i++) {
-        this->derivedNeuronMatrix->setValue(0, i, this->getNeurons().at(i)->getDerivedValue());
+        derivedNeuronMatrix.setValue(0, i, this->getNeurons().at(i).getDerivedValue());
     }
+
+    return derivedNeuronMatrix;
 }
 
-iris::Matrix *iris::Layer::getNeuronMatrix() {
-    return this->neuronMatrix;
-}
-
-iris::Matrix *iris::Layer::getActivatedNeuronMatrix() {
-    return this->activatedNeuronMatrix;
-}
-
-iris::Matrix *iris::Layer::getDerivedNeuronMatrix() {
-    return this->derivedNeuronMatrix;
-}
-
-void iris::Layer::setValues(vector<double> values) {
+void Layer::setValues(vector<double> values) {
     for (int i = 0; i < values.size(); i++) {
-        this->getNeurons().at(i)->setValue(values.at(i));
+        this->neurons.at(i).setValue(values.at(i));
     }
-    
-    this->generateNeuronMatrix();
-    this->generateActivatedNeuronMatrix();
-    this->generateDerivedNeuronMatrix();
 }
 
-void iris::Layer::describe(int level) {
+void Layer::describe(int level) {
     for (int i = 0; i < level; i++) {
         cout << "\t";
     }
@@ -383,8 +370,8 @@ void iris::Layer::describe(int level) {
     
     cout << "Neurons: [" << endl;
     
-    for (iris::Neuron *n : this->getNeurons()) {
-        n->describe(level + 1);
+    for (Neuron n : this->getNeurons()) {
+        n.describe(level + 1);
     }
     
     for (int i = 0; i < level; i++) {
@@ -401,59 +388,59 @@ void iris::Layer::describe(int level) {
  * +---------+
  */
 
-iris::Network::Network(vector<int> topology) {
-    this->id = iris::Utils::generateId();
+Network::Network(vector<int> topology) {
+    this->id = Utils::generateId();
     this->depth = topology.size();
     this->topology = topology;
 
-    for (int size : topology) {
-        this->layers.push_back(new Layer(size));
+    for (int size : this->topology) {
+        this->layers.push_back(Layer(size));
     }    
     
     for (int i = 0; i < topology.size() - 1; i++) {
-        this->weights.push_back(new Matrix(topology.at(i), topology.at(i + 1), true));
+        this->weights.push_back(Matrix(this->topology.at(i), this->topology.at(i + 1), true));
     }
 }
 
-string iris::Network::getId() {
+string Network::getId() {
     return this->id;
 }
 
-int iris::Network::getDepth() {
+int Network::getDepth() {
     return this->depth;
 }
 
-vector<int> iris::Network::getTopology() {
+vector<int> Network::getTopology() {
     return this->topology;
 }
 
-vector<iris::Layer *> iris::Network::getLayers() {
+vector<Layer> Network::getLayers() {
     return this->layers;
 }
 
-vector<iris::Matrix *> iris::Network::getWeights() {
+vector<Matrix> Network::getWeights() {
     return this->weights;
 }
 
-void iris::Network::setInput(vector<double> input) {
+void Network::setInput(vector<double> input) {
     this->input = input;
-    this->getLayers().at(0)->setValues(this->input);
+    this->layers.at(0).setValues(this->input);
 }
 
-void iris::Network::feedForward() {
+void Network::feedForward() {
     for (int i = 0; i < this->depth - 1; i++) {
-        iris::Matrix *input = i != 0
-            ? this->getLayers().at(i)->getActivatedNeuronMatrix()
-            : this->getLayers().at(i)->getNeuronMatrix();
-        iris::Matrix *weights = this->getWeights().at(i);
+        Matrix input = i != 0
+            ? this->layers.at(i).getActivatedNeuronMatrix()
+            : this->layers.at(i).getNeuronMatrix();
+        Matrix weights = this->weights.at(i);
         
-        iris::Matrix *result = input->multiply(weights);
+        Matrix result = input.multiply(weights);
     
-        this->getLayers().at(i + 1)->setValues(result->vectorize());
+        this->layers.at(i + 1).setValues(result.vectorize());
     }
 }
 
-void iris::Network::describe(int level) {
+void Network::describe(int level) {
     cout << "Network [\033[1;32m" << this->getId() << "\033[0m]" << endl;
     cout << "---" << endl;
     cout << "Topology: { ";
@@ -466,10 +453,10 @@ void iris::Network::describe(int level) {
     cout << "Layers: [" << endl;
 
     for (int i = 0; i < this->getDepth(); i++) {
-        this->getLayers().at(i)->describe(level + 1);
+        this->getLayers().at(i).describe(level + 1);
 
         if (i < this->getDepth() - 1) {
-            this->getWeights().at(i)->describe(level + 1);
+            this->getWeights().at(i).describe(level + 1);
         }
     }
     
