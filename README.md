@@ -11,8 +11,7 @@ To create a network and view its architecture, use the example code below and pl
 - `describe()` prints every layer and every neuron inside the network, exposing its information.
 
 ```cpp
-#include <iostream>
-#include "../include/iris.h"
+#include "../include/iris/iris.h"
 
 int main(int argc, char **argv) {
     iris::Network inet = iris::Network({3, 2, 3});
