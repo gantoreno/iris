@@ -14,14 +14,14 @@ using namespace std;
  */
 
 string iris::Utils::generateId() {
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(0, 15);
-    std::uniform_int_distribution<> dis2(8, 11);
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<> dis(0, 15);
+    uniform_int_distribution<> dis2(8, 11);
 
-    std::stringstream ss;
+    stringstream ss;
     
-    ss << std::hex;
+    ss << hex;
     
     for (int i = 0; i < 8; i++) {
         ss << dis(gen);
@@ -266,12 +266,12 @@ void iris::Matrix::describe(int level) {
         
         for (int j = 0; j < this->getCols(); j++) {
             cout << "\033[33m" 
-                 << std::fixed 
-                 << std::right 
-                 << std::setw(5) 
-                 << std::setprecision(4) 
+                 << fixed 
+                 << right 
+                 << setw(5) 
+                 << setprecision(4) 
                  << this->getValue(i, j) 
-                 << std::defaultfloat 
+                 << defaultfloat 
                  << " ";    
         }
 
