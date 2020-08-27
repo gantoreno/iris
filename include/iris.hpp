@@ -7,9 +7,6 @@
 using namespace std;
 
 namespace iris {
-    string generateId();
-    double generateRandomNumber();    
-
     class Neuron {
     private:
         string id;
@@ -17,11 +14,11 @@ namespace iris {
         double rawValue;
         double activatedValue;
         double derivedValue;
-    public:
-        Neuron(double value);
 
         void activate();
         void derive();
+    public:
+        Neuron(double value);
         
         string getId();
  
@@ -69,6 +66,10 @@ namespace iris {
         Matrix *neuronMatrix;
         Matrix *activatedNeuronMatrix;
         Matrix *derivedNeuronMatrix;
+    
+        void generateNeuronMatrix();
+        void generateActivatedNeuronMatrix();
+        void generateDerivedNeuronMatrix();
     public:
         Layer(int size);
     
@@ -77,15 +78,11 @@ namespace iris {
         int getSize();
         vector<Neuron *> getNeurons();
     
-        void setNeuronMatrix();
-        void setActivatedNeuronMatrix();
-        void setDerivedNeuronMatrix();
-    
         Matrix *getNeuronMatrix();
         Matrix *getActivatedNeuronMatrix();
         Matrix *getDerivedNeuronMatrix();
     
-        void updateNeuron(int index, double value);
+        void setValues(vector<double> values);
      
         void describe(int level = 0);
     };
@@ -110,8 +107,16 @@ namespace iris {
         vector<Matrix *> getWeights();
 
         void setInput(vector<double> input);
-        
+        void feedForward();        
+
         void describe(int level = 0);
+    };
+
+    class Utils {
+    private:
+    public:
+        static string generateId();
+        static double generateRandomNumber();
     };
 }
 
