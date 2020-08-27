@@ -232,8 +232,7 @@ double iris::Matrix::getValue(int row, int col) {
     return this->values.at(row).at(col);
 }
 
-void iris::Matrix::describe(int level) {
-    
+void iris::Matrix::describe(int level) { 
     for (int i = 0; i < level; i++) {
         cout << "\t";
     }
@@ -258,7 +257,11 @@ void iris::Matrix::describe(int level) {
     
     cout << "Columns: \033[35m" << this->getCols() << "\033[0m" << endl;
     
-    for (int i = 0; i <  this->getRows(); i++) { 
+    for (int i = 0; i <  this->getRows(); i++) {  
+        for (int i = 0; i < level; i++) {
+            cout << "\t";
+        }
+    
         cout << "[ ";
         
         for (int j = 0; j < this->getCols(); j++) {
@@ -462,8 +465,12 @@ void iris::Network::describe(int level) {
     cout << "}" << endl;
     cout << "Layers: [" << endl;
 
-    for (Layer *l : this->getLayers()) {
-        l->describe(level + 1);
+    for (int i = 0; i < this->getDepth(); i++) {
+        this->getLayers().at(i)->describe(level + 1);
+
+        if (i < this->getDepth() - 1) {
+            this->getWeights().at(i)->describe(level + 1);
+        }
     }
     
     cout << "]" << endl;
