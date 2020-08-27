@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
+
 project(iris)
 
 set(CMAKE_BUILD_TYPE Debug)
