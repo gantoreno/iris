@@ -8,5 +8,5 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "./out")
 add_executable(
     iris
     src/main.cpp
-    src/iris.cpp
+    src/iris/iris.cpp
 )

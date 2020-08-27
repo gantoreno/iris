@@ -11,7 +11,7 @@ namespace iris {
     
     class Neuron {
     private:
-        string id; 
+        string id;
         
         double rawValue;
         double activatedValue;
@@ -36,14 +36,15 @@ namespace iris {
     class Layer {
     private:
         string id;
-
+        
         int size;
         vector<Neuron *> neurons;
     public:
         Layer(int size);
     
         string getId();
-
+        
+        int getSize();
         vector<Neuron *> getNeurons();
         
         void describe();
@@ -67,7 +68,6 @@ namespace iris {
         double getValue(int row, int col);
         
         void setValue(int row, int col, double value);     
-        
         void transpose();
         
         void describe();
@@ -86,9 +86,11 @@ namespace iris {
         Network(vector<int> topology);
     
         string getId();
- 
+
+        vector<int> getTopology();
         vector<Layer *> getLayers();
-        
+        vector<Matrix *> getWeights();
+
         void setInput(vector<double> input);
         
         void describe();

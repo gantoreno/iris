@@ -143,32 +143,32 @@ iris/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/iris.dir/build.make CMakeFiles/iris.dir/build
 .PHONY : iris/fast
 
-src/iris.o: src/iris.cpp.o
+src/iris/iris.o: src/iris/iris.cpp.o
 
-.PHONY : src/iris.o
+.PHONY : src/iris/iris.o
 
 # target to build an object file
-src/iris.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/iris.dir/build.make CMakeFiles/iris.dir/src/iris.cpp.o
-.PHONY : src/iris.cpp.o
+src/iris/iris.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/iris.dir/build.make CMakeFiles/iris.dir/src/iris/iris.cpp.o
+.PHONY : src/iris/iris.cpp.o
 
-src/iris.i: src/iris.cpp.i
+src/iris/iris.i: src/iris/iris.cpp.i
 
-.PHONY : src/iris.i
+.PHONY : src/iris/iris.i
 
 # target to preprocess a source file
-src/iris.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/iris.dir/build.make CMakeFiles/iris.dir/src/iris.cpp.i
-.PHONY : src/iris.cpp.i
+src/iris/iris.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/iris.dir/build.make CMakeFiles/iris.dir/src/iris/iris.cpp.i
+.PHONY : src/iris/iris.cpp.i
 
-src/iris.s: src/iris.cpp.s
+src/iris/iris.s: src/iris/iris.cpp.s
 
-.PHONY : src/iris.s
+.PHONY : src/iris/iris.s
 
 # target to generate assembly for a file
-src/iris.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/iris.dir/build.make CMakeFiles/iris.dir/src/iris.cpp.s
-.PHONY : src/iris.cpp.s
+src/iris/iris.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/iris.dir/build.make CMakeFiles/iris.dir/src/iris/iris.cpp.s
+.PHONY : src/iris/iris.cpp.s
 
 src/main.o: src/main.cpp.o
 
@@ -206,9 +206,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... iris"
-	@echo "... src/iris.o"
-	@echo "... src/iris.i"
-	@echo "... src/iris.s"
+	@echo "... src/iris/iris.o"
+	@echo "... src/iris/iris.i"
+	@echo "... src/iris/iris.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

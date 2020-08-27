@@ -3,7 +3,7 @@
 #include <sstream>
 #include <iomanip>
 #include <vector>
-#include "../include/iris.hpp"
+#include "../../include/iris/iris.hpp"
 
 using namespace std;
 
@@ -58,7 +58,6 @@ void iris::Neuron::describe() {
     cout << "\t\tRaw value:       \033[35m" << this->getRawValue() << "\033[0m" << endl;
     cout << "\t\tActivated value: \033[35m" << this->getActivatedValue() << "\033[0m" << endl;
     cout << "\t\tDerived value:   \033[35m" << this->getDerivedValue() << "\033[0m" << endl;
-    cout << endl;
 }
 
 /**
@@ -78,6 +77,10 @@ iris::Layer::Layer(int size) {
 
 string iris::Layer::getId() {
     return this->id;
+}
+
+int iris::Layer::getSize() {
+    return this->size;
 }
 
 vector<iris::Neuron *> iris::Layer::getNeurons() {
@@ -218,6 +221,18 @@ string iris::Network::getId() {
     return this->id;
 }
 
+vector<int> iris::Network::getTopology() {
+    return this->topology;
+}
+
+vector<iris::Layer *> iris::Network::getLayers() {
+    return this->layers;
+}
+
+vector<iris::Matrix *> iris::Network::getWeights() {
+    return this->weights;
+}
+
 void iris::Network::setInput(vector<double> input) {
     this->input = input;
 
@@ -226,16 +241,12 @@ void iris::Network::setInput(vector<double> input) {
     }
 }
 
-vector<iris::Layer *> iris::Network::getLayers() {
-    return this->layers;
-}
-
 void iris::Network::describe() {
     cout << "Network [\033[31m" << this->getId() << "\033[0m]" << endl;
     cout << "---" << endl;
     cout << "Topology: { ";
 
-    for (int size : this->topology) {
+    for (int size : this->getTopology()) {
         cout << "\033[35m" << size << "\033[0m ";
     }    
   
