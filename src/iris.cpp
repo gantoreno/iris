@@ -221,6 +221,7 @@ vector<double> Matrix::vectorize() {
 double Matrix::getCols() {
     return this->cols;
 }
+
 double Matrix::getRows() {
     return this->rows;
 }
@@ -447,7 +448,6 @@ void Network::setInput(vector<double> input) {
     this->input = input;
     this->layers.at(0).setValues(this->input);
 }
-
 
 void Network::setTarget(vector<double> target) {
     this->target = target;
