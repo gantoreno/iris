@@ -31,7 +31,6 @@ int main(int argc, char **argv) {
 
     return 0;
 }
-}
 ```
 
 To run the project, use CMake:
