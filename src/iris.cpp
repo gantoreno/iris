@@ -56,6 +56,16 @@ string Utils::generateId() {
     return ss.str();
 }
 
+string Utils::generateIndentation(int level) {
+    stringstream tabStream;
+
+    for (int i = 0; i < level; i++) {
+        tabStream << "\t";
+    }
+
+    return tabStream.str();
+}
+
 double Utils::generateRandomNumber() {
     random_device rd;
     mt19937 gen(rd());
@@ -110,40 +120,13 @@ void Neuron::setValue(double value) {
 }
 
 void Neuron::describe(int level) {
-    for (int i = 0; i < level; i++) {
-        cout << "\t";
-    }
+    string tabs = Utils::generateIndentation(level);
     
-    cout << "Neuron [\033[1;34m" << this->getId() << "\033[0m]" << endl;
-    
-    for (int i = 0; i < level; i++) {
-        cout << "\t";
-    }
-    
-    cout << "---" << endl;
-    
-    for (int i = 0; i < level; i++) {
-        cout << "\t";
-    }
-    
-    cout << "Raw value:       \033[35m" << this->getRawValue() << "\033[0m" << endl;
-    
-    for (int i = 0; i < level; i++) {
-        cout << "\t";
-    }
-    
-    cout << "Activated value: \033[35m" << this->getActivatedValue() << "\033[0m" << endl;
-    
-    for (int i = 0; i < level; i++) {
-        cout << "\t";
-    }
-    
-    cout << "Derived value:   \033[35m" << this->getDerivedValue() << "\033[0m" << endl;
-    
-    for (int i = 0; i < level; i++) {
-        cout << "\t";
-    }
-    
+    cout << tabs << "Neuron [\033[1;34m" << this->getId() << "\033[0m]" << endl;
+    cout << tabs << "---" << endl;
+    cout << tabs << "Raw value:       \033[35m" << this->getRawValue() << "\033[0m" << endl;
+    cout << tabs << "Activated value: \033[35m" << this->getActivatedValue() << "\033[0m" << endl;
+    cout << tabs << "Derived value:   \033[35m" << this->getDerivedValue() << "\033[0m" << endl;
     cout << endl;
 }
 
@@ -235,36 +218,15 @@ double Matrix::getValue(int row, int col) {
 }
 
 void Matrix::describe(int level) { 
-    for (int i = 0; i < level; i++) {
-        cout << "\t";
-    }
+    string tabs = Utils::generateIndentation(level);
     
-    cout << "Matrix [\033[1;32m" << this->getId() << "\033[0m]" << endl;
-    
-    for (int i = 0; i < level; i++) {
-        cout << "\t";
-    }
-    
-    cout << "---" << endl;
-    
-    for (int i = 0; i < level; i++) {
-        cout << "\t";
-    }
-    
-    cout << "Rows:    \033[35m" << this->rows << "\033[0m" << endl;
-    
-    for (int i = 0; i < level; i++) {
-        cout << "\t";
-    }
-    
-    cout << "Columns: \033[35m" << this->cols << "\033[0m" << endl;
+    cout << tabs << "Matrix [\033[1;32m" << this->getId() << "\033[0m]" << endl;
+    cout << tabs << "---" << endl;
+    cout << tabs << "Rows:    \033[35m" << this->rows << "\033[0m" << endl;
+    cout << tabs << "Columns: \033[35m" << this->cols << "\033[0m" << endl;
     
     for (int i = 0; i <  this->rows; i++) {  
-        for (int i = 0; i < level; i++) {
-            cout << "\t";
-        }
-    
-        cout << "[ ";
+        cout << tabs << "[ ";
         
         for (int j = 0; j < this->cols; j++) {
             cout << "\033[33m" 
@@ -355,39 +317,18 @@ void Layer::setValues(vector<double> values) {
 }
 
 void Layer::describe(int level) {
-    for (int i = 0; i < level; i++) {
-        cout << "\t";
-    }
+    string tabs = Utils::generateIndentation(level);
     
-    cout << "Layer [\033[1;33m" << this->getId() << "\033[0m]" << endl;
-    
-    for (int i = 0; i < level; i++) {
-        cout << "\t";
-    }
-    
-    cout << "---" << endl;
-    
-    for (int i = 0; i < level; i++) {
-        cout << "\t";
-    }
-    
-    cout << "Size: \033[35m" << this->neurons.size() << "\033[0m" << endl;
-    
-    for (int i = 0; i < level; i++) {
-        cout << "\t";
-    }
-    
-    cout << "Neurons: [" << endl;
+    cout << tabs << "Layer [\033[1;33m" << this->getId() << "\033[0m]" << endl;
+    cout << tabs << "---" << endl;
+    cout << tabs << "Size: \033[35m" << this->neurons.size() << "\033[0m" << endl;
+    cout << tabs << "Neurons: [" << endl;
     
     for (Neuron n : this->neurons) {
         n.describe(level + 1);
     }
-    
-    for (int i = 0; i < level; i++) {
-        cout << "\t";
-    }
-     
-    cout << "]" << endl;    
+
+    cout << tabs << "]" << endl;    
     cout << endl;
 }
 
