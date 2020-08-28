@@ -17,11 +17,6 @@ To create a network and view its architecture, use the example code below and pl
 #include "../include/iris.hpp"
 
 int main(int argc, char **argv) {
-#include "../include/iris.hpp"
-
-using namespace iris;
-
-int main(int argc, char **argv) {
     iris::Network inet = iris::Network({3, 2, 3});
 
     inet.setInput({0, 1, 3});
@@ -33,7 +28,7 @@ int main(int argc, char **argv) {
 }
 ```
 
-To run the project, use CMake:
+To build and run the project, use CMake:
 
 ```sh
 $ cmake .

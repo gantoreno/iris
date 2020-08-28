@@ -1,7 +1,5 @@
 #include "../include/iris.hpp"
 
-using namespace iris;
-
 int main(int argc, char **argv) {
     iris::Network inet = iris::Network({3, 2, 3});
 
