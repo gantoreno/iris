@@ -93,6 +93,8 @@ namespace iris {
         vector<int> topology;
         vector<Layer> layers; 
         vector<Matrix> weights; 
+        vector<Matrix> gradients; 
+        vector<Matrix> deltas;
         
         vector<double> input;
         vector<double> target;
@@ -113,11 +115,14 @@ namespace iris {
         vector<int> getTopology();
         vector<Layer> getLayers();
         vector<Matrix> getWeights();
+        vector<Matrix> getGradients();
+        vector<Matrix> getDeltas();
 
         void setInput(vector<double> input);
         void setTarget(vector<double> target);
        
         void feedForward();        
+        void propagateBackwards();
 
         void describe(int level = 0);
     };
