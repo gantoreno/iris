@@ -338,14 +338,14 @@ void Layer::describe(int level) {
  * +---------+
  */
 
-Network::Network(vector<int> topology) {
+Network::Network(vector<Layer> layers) {
     this->id = Utils::generateId();
-    this->depth = topology.size();
-    this->topology = topology;
+    this->layers = layers;
+    this->depth = this->layers.size();
 
-    for (int size : this->topology) {
-        this->layers.push_back(Layer(size));
-    }    
+    for (Layer l : this->layers) {
+        this->topology.push_back(l.getSize());
+    }
     
     for (int i = 0; i < this->topology.size() - 1; i++) {
         int currentTopology = this->topology.at(i);

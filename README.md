@@ -6,8 +6,8 @@ Iris is an experimental neural network engine, built from scratch with C++.
 
 To create a network and view its architecture, use the example code below and place it inside `src/main.cpp`:
 
--   `Network` is the neural network engine.
--   `{3, 2, 3}` is the topology vector, defines each layer for the neural network.
+-   `Network` is the neural network engine, the constructor receives a vector of `iris::Layer`.
+-   `iris::Layer` specifies a new layer, where `3`, `2` and `3` are the ammount of neurons inside each layer.
 -   `setInput()` adds the input to the network, where `{0, 1, 3}` is the input vector.
 -   `setTarget()` sets the expected output, where `{3, 2, 4}` is the output vector.
 -   `feedForward()` executes a single feed-forward action to process the input.
@@ -17,10 +17,14 @@ To create a network and view its architecture, use the example code below and pl
 #include "../include/iris.hpp"
 
 int main(int argc, char **argv) {
-    iris::Network inet = iris::Network({3, 2, 3});
+    iris::Network inet = iris::Network({
+        iris::Layer(3),
+        iris::Layer(2),
+        iris::Layer(3)
+    });
 
-    inet.setInput({0, 1, 3});
-    inet.setTarget({3, 2, 4});
+    inet.setInput({1, 0, 1});
+    inet.setTarget({1, 0, 1});
     inet.feedForward();
     inet.describe();
 

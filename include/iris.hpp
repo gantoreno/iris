@@ -106,7 +106,7 @@ namespace iris {
 
         void calculateError();
     public:
-        Network(vector<int> topology);
+        Network(vector<Layer> layers);
     
         string getId();
 
