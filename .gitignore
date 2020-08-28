@@ -1,3 +1,6 @@
+# IDE related
+.vscode/
+
 # CMake files
 CMakeFiles/
 CMakeCache.txt
