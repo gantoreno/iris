@@ -1,6 +1,6 @@
-# Iris: C++ Neural Network Engine
+# Iris: A C++ Neural Network Engine
 
-Iris is an experimental neural network engine, built with C++.
+Iris is an experimental neural network engine, built from scratch with C++.
 
 ## Usage
 
