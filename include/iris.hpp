@@ -91,9 +91,18 @@ namespace iris {
         int depth; 
         
         vector<int> topology;
-        vector<double> input;
         vector<Layer> layers; 
         vector<Matrix> weights; 
+        
+        vector<double> input;
+        vector<double> target;
+        vector<double> errors;
+
+        double globalError;
+
+        vector<vector<double>> historicalErrors;
+
+        void calculateError();
     public:
         Network(vector<int> topology);
     
@@ -106,6 +115,7 @@ namespace iris {
         vector<Matrix> getWeights();
 
         void setInput(vector<double> input);
+        void setTarget(vector<double> target);
        
         void feedForward();        
 

@@ -427,6 +427,11 @@ void Network::setInput(vector<double> input) {
     this->layers.at(0).setValues(this->input);
 }
 
+
+void Network::setTarget(vector<double> target) {
+    this->target = target;
+}
+
 void Network::feedForward() {
     for (int i = 0; i < this->depth - 1; i++) {
         Matrix input = i != 0
@@ -438,18 +443,55 @@ void Network::feedForward() {
     
         this->layers.at(i + 1).setValues(result.vectorize());
     }
+
+    this->calculateError();
+}
+
+void Network::calculateError() {
+    this->errors.clear();
+    this->globalError = 0;
+
+    Layer outputLayer = this->layers.at(this->layers.size() - 1);
+
+    for (int i = 0; i < outputLayer.getSize(); i++) {
+        Neuron n = outputLayer.getNeurons().at(i);
+
+        double outputValue = n.getActivatedValue();
+        double expectedValue = this->target.at(i);
+
+        double error = outputValue - expectedValue;
+
+        this->errors.push_back(error);
+        this->globalError += error;
+    }
+
+    this->historicalErrors.push_back(this->errors);
 }
 
 void Network::describe(int level) {
     cout << "Network [\033[1;32m" << this->getId() << "\033[0m]" << endl;
     cout << "---" << endl;
-    cout << "Topology: { ";
+    cout << "Topology: [ ";
 
-    for (int size : this->getTopology()) {
+    for (int size : this->topology) {
         cout << "\033[35m" << size << "\033[0m ";
     }    
   
-    cout << "}" << endl;
+    cout << "]" << endl;
+    cout << "Input:    [ ";
+
+    for (int value : this->input) {
+        cout << "\033[35m" << value << "\033[0m ";
+    }    
+  
+    cout << "]" << endl;
+    cout << "Target:   [ ";
+
+    for (int value : this->target) {
+        cout << "\033[35m" << value << "\033[0m ";
+    }    
+  
+    cout << "]" << endl;
     cout << "Layers: [" << endl;
 
     for (int i = 0; i < this->getDepth(); i++) {
@@ -460,6 +502,14 @@ void Network::describe(int level) {
         }
     }
     
+    cout << "]" << endl;
+    cout << "Global error:  \033[35m" << this->globalError << "\033[0m" << endl;
+    cout << "Output errors: [ ";
+
+    for (double error : this->errors) {
+        cout << "\033[35m" << error << "\033[0m ";
+    }    
+  
     cout << "]" << endl;
     cout << endl;
 }
