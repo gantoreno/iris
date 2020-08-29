@@ -48,15 +48,15 @@ Matrix Matrix::multiply(Matrix m) {
 }
 
 Matrix Matrix::transpose() {
-    Matrix m = Matrix(this->cols, this->rows, false);
+    Matrix transposed = Matrix(this->cols, this->rows, false);
 
     for (int i = 0; i < this->rows; i++) {
         for (int j = 0; j < this->cols; j++) {
-            m.setValue(j, i, this->getValue(i, j));
+            transposed.setValue(j, i, this->getValue(i, j));
         }
     }
 
-    return m;
+    return transposed;
 }
 
 Matrix Matrix::fromVector(vector<double> v) {
@@ -104,7 +104,7 @@ vector<double> iris::Matrix::getRow(int row) {
 void Matrix::describe(int level) { 
     string tabs = Utils::generateIndentation(level);
     
-    cout << tabs << "Matrix [\033[1;32m" << this->getId() << "\033[0m]" << endl;
+    cout << tabs << "Matrix [\033[1;32m" << this->id << "\033[0m]" << endl;
     cout << tabs << "---" << endl;
     cout << tabs << "Rows:    \033[35m" << this->rows << "\033[0m" << endl;
     cout << tabs << "Columns: \033[35m" << this->cols << "\033[0m" << endl;
@@ -118,7 +118,7 @@ void Matrix::describe(int level) {
                  << right 
                  << setw(5) 
                  << setprecision(4) 
-                 << this->getValue(i, j) 
+                 << this->values.at(i).at(j) 
                  << defaultfloat 
                  << " ";    
         }

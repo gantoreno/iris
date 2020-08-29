@@ -185,15 +185,15 @@ void Network::describe(int level) {
     cout << "]" << endl;
     cout << "Input:    [ ";
 
-    for (int value : this->input) {
-        cout << "\033[35m" << value << "\033[0m ";
+    for (int input : this->input) {
+        cout << "\033[35m" << input << "\033[0m ";
     }    
   
     cout << "]" << endl;
     cout << "Target:   [ ";
 
-    for (int value : this->target) {
-        cout << "\033[35m" << value << "\033[0m ";
+    for (int target : this->target) {
+        cout << "\033[35m" << target << "\033[0m ";
     }    
   
     cout << "]" << endl;

@@ -46,10 +46,10 @@ void Neuron::setValue(double value) {
 void Neuron::describe(int level) {
     string tabs = Utils::generateIndentation(level);
     
-    cout << tabs << "Neuron [\033[1;34m" << this->getId() << "\033[0m]" << endl;
+    cout << tabs << "Neuron [\033[1;34m" << this->id << "\033[0m]" << endl;
     cout << tabs << "---" << endl;
-    cout << tabs << "Raw value:       \033[35m" << this->getRawValue() << "\033[0m" << endl;
-    cout << tabs << "Activated value: \033[35m" << this->getActivatedValue() << "\033[0m" << endl;
-    cout << tabs << "Derived value:   \033[35m" << this->getDerivedValue() << "\033[0m" << endl;
+    cout << tabs << "Raw value:       \033[35m" << this->rawValue << "\033[0m" << endl;
+    cout << tabs << "Activated value: \033[35m" << this->activatedValue << "\033[0m" << endl;
+    cout << tabs << "Derived value:   \033[35m" << this->derivedValue << "\033[0m" << endl;
     cout << endl;
 }

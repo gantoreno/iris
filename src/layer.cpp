@@ -73,13 +73,13 @@ void Layer::setValues(vector<double> values) {
 void Layer::describe(int level) {
     string tabs = Utils::generateIndentation(level);
     
-    cout << tabs << "Layer [\033[1;33m" << this->getId() << "\033[0m]" << endl;
+    cout << tabs << "Layer [\033[1;33m" << this->id << "\033[0m]" << endl;
     cout << tabs << "---" << endl;
     cout << tabs << "Size: \033[35m" << this->neurons.size() << "\033[0m" << endl;
     cout << tabs << "Neurons: [" << endl;
     
-    for (Neuron n : this->neurons) {
-        n.describe(level + 1);
+    for (Neuron neuron : this->neurons) {
+        neuron.describe(level + 1);
     }
 
     cout << tabs << "]" << endl;    
