@@ -82,7 +82,6 @@ void Network::feedForward() {
 
 void Network::propagateBackwards() {
     for (int l = this->layers.size() - 1; l > 0; l--) {
-    cout << "backpropagating at layer" << l << endl;
         if (l == this->layers.size() - 1) {
             Layer outputLayer = this->layers.at(l);
             Layer lastHiddenLayer = this->layers.at(l - 1); 
@@ -144,7 +143,7 @@ void Network::propagateBackwards() {
             for (int i = 0; i < leftWeights.getRows(); i++) {
                 for (int j = 0; j < leftWeights.getCols(); j++) {
                     double previousWeight = leftWeights.getValue(i, j);
-                    double deltaWeight = leftDeltas.getValue(i, j);
+                    double deltaWeight = leftDeltas.getValue(0, j);
 
                     leftWeights.setValue(i, j, previousWeight - deltaWeight);
                 }
