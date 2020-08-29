@@ -1,3 +1,4 @@
+#include <iostream>
 #include <vector>
 #include "../include/iris.hpp"
 
@@ -81,8 +82,8 @@ void Network::feedForward() {
 
 void Network::propagateBackwards() {
     for (int l = this->layers.size() - 1; l > 0; l--) {
+    cout << "backpropagating at layer" << l << endl;
         if (l == this->layers.size() - 1) {
-            // Output to hidden
             Layer outputLayer = this->layers.at(l);
             Layer lastHiddenLayer = this->layers.at(l - 1); 
 
@@ -114,41 +115,38 @@ void Network::propagateBackwards() {
                     lastWeights.setValue(i, j, previousWeight - deltaWeight);
                 }
             }
-        } else if (l > 1) {
-            // Hidden to hidden
         } else {
-            // Hidden to input
-            Matrix &firstWeights = this->weights.at(l - 1);
-            Matrix &firstGradients = this->gradients.at(l - 1);
-            Matrix &nextWeights = this->weights.at(l);
-            Matrix &nextGradients = this->gradients.at(l);
+            Matrix &leftWeights = this->weights.at(l - 1);
+            Matrix &leftGradients = this->gradients.at(l - 1);
+            Matrix &rightWeights = this->weights.at(l);
+            Matrix &rightGradients = this->gradients.at(l);
              
-            for (int i = 0; i < firstGradients.getCols(); i++) {
-                Matrix gradientRow = Matrix::fromVector(nextGradients.getRow(0));
-                Matrix weightRow = Matrix::fromVector(nextWeights.getRow(i));
+            for (int i = 0; i < leftGradients.getCols(); i++) {
+                Matrix gradientRow = Matrix::fromVector(rightGradients.getRow(0));
+                Matrix weightRow = Matrix::fromVector(rightWeights.getRow(i));
                 
                 Matrix product = gradientRow.multiply(weightRow.transpose());
                 
                 Neuron currentNeuron = this->layers.at(l).getNeurons().at(i);
  
-                firstGradients.setValue(0, i, product.getValue(0, 0) * currentNeuron.getDerivedValue());
+                leftGradients.setValue(0, i, product.getValue(0, 0) * currentNeuron.getDerivedValue());
             }
-            
-            Matrix inputMatrix = Matrix::fromVector(this->input);
 
-            Matrix &firstDeltas = this->deltas.at(l - 1);
+            Matrix &leftDeltas = this->deltas.at(l - 1);
 
-            firstDeltas = firstGradients
+            leftDeltas = leftGradients
                 .transpose()
-                .multiply(inputMatrix)
+                .multiply(l == 1 
+                    ? Matrix::fromVector(this->input) 
+                    : this->layers.at(l).getDerivedNeuronMatrix())
                 .transpose();
 
-            for (int i = 0; i < firstWeights.getRows(); i++) {
-                for (int j = 0; j < firstWeights.getCols(); j++) {
-                    double previousWeight = firstWeights.getValue(i, j);
-                    double deltaWeight = firstDeltas.getValue(i, j);
+            for (int i = 0; i < leftWeights.getRows(); i++) {
+                for (int j = 0; j < leftWeights.getCols(); j++) {
+                    double previousWeight = leftWeights.getValue(i, j);
+                    double deltaWeight = leftDeltas.getValue(i, j);
 
-                    firstWeights.setValue(i, j, previousWeight - deltaWeight);
+                    leftWeights.setValue(i, j, previousWeight - deltaWeight);
                 }
             }
         }
