@@ -44,16 +44,20 @@ namespace iris {
         Matrix(int rows, int cols, bool isRandom);
         
         string getId();
+        
+        static Matrix fromVector(vector<double> v);
  
         Matrix multiply(Matrix m);
         Matrix transpose();
-       
+ 
         vector<double> vectorize();
 
         double getCols();
         double getRows(); 
         double getValue(int row, int col);
-        
+       
+        vector<double> getRow(int row);
+ 
         void setValue(int row, int col, double value);     
         
         void describe(int level = 0);

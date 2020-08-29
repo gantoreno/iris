@@ -8,6 +8,10 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "./out")
 
 add_executable(
     iris
-    src/main.cpp
-    src/iris.cpp
+    main.cpp
+    src/utils.cpp
+    src/neuron.cpp
+    src/matrix.cpp
+    src/layer.cpp
+    src/network.cpp
 )
