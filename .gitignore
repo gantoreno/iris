@@ -9,5 +9,8 @@ CMakeFiles/
 CMakeCache.txt
 cmake_install.cmake
 
+# Makefile - gets generated at CMake build
+Makefile
+
 # Binaries
 out/
