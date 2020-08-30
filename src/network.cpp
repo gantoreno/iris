@@ -5,16 +5,19 @@
 using namespace std;
 using namespace iris;
 
-Network::Network(vector<Layer> layers) {
+Network::Network(vector<Layer> layers)
+{
     this->id = Utils::generateId();
     this->layers = layers;
     this->depth = this->layers.size();
 
-    for (Layer l : this->layers) {
+    for (Layer l : this->layers)
+    {
         this->topology.push_back(l.getSize());
     }
-    
-    for (int i = 0; i < this->topology.size() - 1; i++) {
+
+    for (int i = 0; i < this->topology.size() - 1; i++)
+    {
         int currentTopology = this->topology.at(i);
         int nextTopology = this->topology.at(i + 1);
 
@@ -24,55 +27,66 @@ Network::Network(vector<Layer> layers) {
     }
 }
 
-string Network::getId() {
+string Network::getId()
+{
     return this->id;
 }
 
-int Network::getDepth() {
+int Network::getDepth()
+{
     return this->depth;
 }
 
-vector<int> Network::getTopology() {
+vector<int> Network::getTopology()
+{
     return this->topology;
 }
 
-vector<Layer> Network::getLayers() {
+vector<Layer> Network::getLayers()
+{
     return this->layers;
 }
 
-vector<Matrix> Network::getWeights() {
+vector<Matrix> Network::getWeights()
+{
     return this->weights;
 }
 
-vector<Matrix> Network::getGradients() {
+vector<Matrix> Network::getGradients()
+{
     return this->gradients;
 }
 
-vector<Matrix> Network::getDeltas() {
+vector<Matrix> Network::getDeltas()
+{
     return this->deltas;
 }
 
-void Network::setInput(vector<double> input) {
+void Network::setInput(vector<double> input)
+{
     this->input = input;
     this->layers.at(0).setValues(this->input);
 }
 
-void Network::setTarget(vector<double> target) {
+void Network::setTarget(vector<double> target)
+{
     this->target = target;
 }
 
-void Network::feedForward() {
-    for (int i = 0; i < this->depth - 1; i++) {
+void Network::feedForward()
+{
+    for (int i = 0; i < this->depth - 1; i++)
+    {
         Layer currentLayer = this->layers.at(i);
 
         Matrix input = i != 0
-            ? currentLayer.getActivatedNeuronMatrix()
-            : currentLayer.getNeuronMatrix();
+                           ? currentLayer.getActivatedNeuronMatrix()
+                           : currentLayer.getNeuronMatrix();
         Matrix weights = this->weights.at(i);
         Matrix result = input.multiply(weights);
 
         Layer &nextLayer = this->layers.at(i + 1);
-    
+
         nextLayer.setValues(result.vectorize());
     }
 
@@ -80,11 +94,14 @@ void Network::feedForward() {
     this->propagateBackwards();
 }
 
-void Network::propagateBackwards() {
-    for (int l = this->layers.size() - 1; l > 0; l--) {
-        if (l == this->layers.size() - 1) {
+void Network::propagateBackwards()
+{
+    for (int l = this->layers.size() - 1; l > 0; l--)
+    {
+        if (l == this->layers.size() - 1)
+        {
             Layer outputLayer = this->layers.at(l);
-            Layer lastHiddenLayer = this->layers.at(l - 1); 
+            Layer lastHiddenLayer = this->layers.at(l - 1);
 
             Matrix derivedOutputValues = outputLayer.getDerivedNeuronMatrix();
 
@@ -92,9 +109,10 @@ void Network::propagateBackwards() {
             Matrix &lastGradients = this->gradients.at(l - 1);
             Matrix &lastDeltas = this->deltas.at(l - 1);
 
-            for (int i = 0; i < outputLayer.getSize(); i++) {
+            for (int i = 0; i < outputLayer.getSize(); i++)
+            {
                 double derivedOutputValue = derivedOutputValues.getValue(0, i);
-                double outputError = this->errors.at(i); 
+                double outputError = this->errors.at(i);
 
                 double gradientValue = derivedOutputValue * outputError;
 
@@ -102,46 +120,53 @@ void Network::propagateBackwards() {
             }
 
             lastDeltas = lastGradients
-                .transpose()
-                .multiply(lastHiddenLayer.getActivatedNeuronMatrix())
-                .transpose();
+                             .transpose()
+                             .multiply(lastHiddenLayer.getActivatedNeuronMatrix())
+                             .transpose();
 
-            for (int i = 0; i < lastWeights.getRows(); i++) {
-                for (int j = 0; j < lastWeights.getCols(); j++) {
+            for (int i = 0; i < lastWeights.getRows(); i++)
+            {
+                for (int j = 0; j < lastWeights.getCols(); j++)
+                {
                     double previousWeight = lastWeights.getValue(i, j);
                     double deltaWeight = lastDeltas.getValue(i, j);
 
                     lastWeights.setValue(i, j, previousWeight - deltaWeight);
                 }
             }
-        } else {
+        }
+        else
+        {
             Matrix &leftWeights = this->weights.at(l - 1);
             Matrix &leftGradients = this->gradients.at(l - 1);
             Matrix &rightWeights = this->weights.at(l);
             Matrix &rightGradients = this->gradients.at(l);
-             
-            for (int i = 0; i < leftGradients.getCols(); i++) {
+
+            for (int i = 0; i < leftGradients.getCols(); i++)
+            {
                 Matrix gradientRow = Matrix::fromVector(rightGradients.getRow(0));
                 Matrix weightRow = Matrix::fromVector(rightWeights.getRow(i));
-                
+
                 Matrix product = gradientRow.multiply(weightRow.transpose());
-                
+
                 Neuron currentNeuron = this->layers.at(l).getNeurons().at(i);
- 
+
                 leftGradients.setValue(0, i, product.getValue(0, 0) * currentNeuron.getDerivedValue());
             }
 
             Matrix &leftDeltas = this->deltas.at(l - 1);
 
             leftDeltas = leftGradients
-                .transpose()
-                .multiply(l == 1 
-                    ? Matrix::fromVector(this->input) 
-                    : this->layers.at(l).getDerivedNeuronMatrix())
-                .transpose();
+                             .transpose()
+                             .multiply(l == 1
+                                           ? Matrix::fromVector(this->input)
+                                           : this->layers.at(l).getDerivedNeuronMatrix())
+                             .transpose();
 
-            for (int i = 0; i < leftWeights.getRows(); i++) {
-                for (int j = 0; j < leftWeights.getCols(); j++) {
+            for (int i = 0; i < leftWeights.getRows(); i++)
+            {
+                for (int j = 0; j < leftWeights.getCols(); j++)
+                {
                     double previousWeight = leftWeights.getValue(i, j);
                     double deltaWeight = leftDeltas.getValue(0, j);
 
@@ -152,13 +177,15 @@ void Network::propagateBackwards() {
     }
 }
 
-void Network::calculateError() {
+void Network::calculateError()
+{
     this->errors.clear();
     this->globalError = 0;
 
     Layer outputLayer = this->layers.at(this->layers.size() - 1);
 
-    for (int i = 0; i < outputLayer.getSize(); i++) {
+    for (int i = 0; i < outputLayer.getSize(); i++)
+    {
         Neuron outputNeuron = outputLayer.getNeurons().at(i);
 
         double outputValue = outputNeuron.getActivatedValue();
@@ -173,50 +200,57 @@ void Network::calculateError() {
     this->historicalErrors.push_back(this->errors);
 }
 
-void Network::describe(int level) {
+void Network::describe(int level)
+{
     cout << "Network [\033[1;32m" << this->getId() << "\033[0m]" << endl;
     cout << "---" << endl;
     cout << "Topology: [ ";
 
-    for (int size : this->topology) {
+    for (int size : this->topology)
+    {
         cout << "\033[35m" << size << "\033[0m ";
-    }    
-  
+    }
+
     cout << "]" << endl;
     cout << "Input:    [ ";
 
-    for (int input : this->input) {
+    for (int input : this->input)
+    {
         cout << "\033[35m" << input << "\033[0m ";
-    }    
-  
+    }
+
     cout << "]" << endl;
     cout << "Target:   [ ";
 
-    for (int target : this->target) {
+    for (int target : this->target)
+    {
         cout << "\033[35m" << target << "\033[0m ";
-    }    
-  
+    }
+
     cout << "]" << endl;
     cout << "Layers: [" << endl;
 
-    for (int i = 0; i < this->depth; i++) {
+    for (int i = 0; i < this->depth; i++)
+    {
         this->layers.at(i).describe(level + 1);
 
-        if (i < this->depth - 1) {
+        if (i < this->depth - 1)
+        {
             this->weights.at(i).describe(level + 1);
             this->gradients.at(i).describe(level + 1);
             this->deltas.at(i).describe(level + 1);
         }
     }
-    
+
     cout << "]" << endl;
     cout << "Global error:  \033[35m" << this->globalError << "\033[0m" << endl;
     cout << "Output errors: [ ";
 
-    for (double error : this->errors) {
+    for (double error : this->errors)
+    {
         cout << "\033[35m" << error << "\033[0m ";
-    }    
-  
+    }
+
     cout << "]" << endl;
     cout << endl;
 }
