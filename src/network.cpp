@@ -79,13 +79,11 @@ void Network::feedForward()
     {
         Layer currentLayer = this->layers.at(i);
 
-        Matrix input = i != 0
-                           ? currentLayer.getActivatedNeuronMatrix()
-                           : currentLayer.getNeuronMatrix();
+        Matrix input = i != 0 ? currentLayer.getActivatedNeuronMatrix() : currentLayer.getNeuronMatrix();
         Matrix weights = this->weights.at(i);
         Matrix result = input.multiply(weights);
 
-        Layer &nextLayer = this->layers.at(i + 1);
+        Layer& nextLayer = this->layers.at(i + 1);
 
         nextLayer.setValues(result.vectorize());
     }
@@ -105,9 +103,9 @@ void Network::propagateBackwards()
 
             Matrix derivedOutputValues = outputLayer.getDerivedNeuronMatrix();
 
-            Matrix &lastWeights = this->weights.at(l - 1);
-            Matrix &lastGradients = this->gradients.at(l - 1);
-            Matrix &lastDeltas = this->deltas.at(l - 1);
+            Matrix& lastWeights = this->weights.at(l - 1);
+            Matrix& lastGradients = this->gradients.at(l - 1);
+            Matrix& lastDeltas = this->deltas.at(l - 1);
 
             for (int i = 0; i < outputLayer.getSize(); i++)
             {
@@ -137,10 +135,10 @@ void Network::propagateBackwards()
         }
         else
         {
-            Matrix &leftWeights = this->weights.at(l - 1);
-            Matrix &leftGradients = this->gradients.at(l - 1);
-            Matrix &rightWeights = this->weights.at(l);
-            Matrix &rightGradients = this->gradients.at(l);
+            Matrix& leftWeights = this->weights.at(l - 1);
+            Matrix& leftGradients = this->gradients.at(l - 1);
+            Matrix& rightWeights = this->weights.at(l);
+            Matrix& rightGradients = this->gradients.at(l);
 
             for (int i = 0; i < leftGradients.getCols(); i++)
             {
@@ -154,13 +152,11 @@ void Network::propagateBackwards()
                 leftGradients.setValue(0, i, product.getValue(0, 0) * currentNeuron.getDerivedValue());
             }
 
-            Matrix &leftDeltas = this->deltas.at(l - 1);
+            Matrix& leftDeltas = this->deltas.at(l - 1);
 
             leftDeltas = leftGradients
                              .transpose()
-                             .multiply(l == 1
-                                           ? Matrix::fromVector(this->input)
-                                           : this->layers.at(l).getDerivedNeuronMatrix())
+                             .multiply(l == 1 ? Matrix::fromVector(this->input) : this->layers.at(l).getDerivedNeuronMatrix())
                              .transpose();
 
             for (int i = 0; i < leftWeights.getRows(); i++)

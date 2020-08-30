@@ -77,7 +77,7 @@ void Layer::setValues(vector<double> values)
 {
     for (int i = 0; i < values.size(); i++)
     {
-        Neuron &currentNeuron = this->neurons.at(i);
+        Neuron& currentNeuron = this->neurons.at(i);
 
         currentNeuron.setValue(values.at(i));
     }
