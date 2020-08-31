@@ -9,15 +9,19 @@ To try the iris engine, create a `main.cpp` file in the root directory, then use
 ```cpp
 #include "include/iris.hpp"
 
+using namespace iris;
+
 int main(int argc, char** argv)
 {
-    iris::Network inet = iris::Network({ iris::Layer(3),
-                                         iris::Layer(2),
-                                         iris::Layer(3) });
+    Network inet({ Layer(3),
+                   Layer(2),
+                   Layer(3) });
 
     inet.setInput({ 1, 0, 1 });
     inet.setTarget({ 1, 0, 1 });
-    inet.feedForward();
+
+    inet.train(100);
+
     inet.describe();
 
     return 0;
@@ -26,11 +30,11 @@ int main(int argc, char** argv)
 
 Where:
 
--   `Network` is the neural network engine, the constructor receives a vector of `iris::Layer`.
--   `iris::Layer` specifies a new layer, where `3`, `2` and `3` are the ammount of neurons inside each layer.
+-   `Network` is the neural network engine, the constructor receives a vector of `Layer`.
+-   `Layer` specifies a new layer, where `3`, `2` and `3` are the ammount of neurons inside each layer.
 -   `setInput()` adds the input to the network, where `{0, 1, 3}` is the input vector.
 -   `setTarget()` sets the expected output, where `{3, 2, 4}` is the output vector.
--   `feedForward()` executes a single feed-forward action to process the input.
+-   `train()` starts the training process, where `100` are the epochs, information will be displayed over each epoch showing the global error.
 -   `describe()` prints every layer and every neuron inside the network, exposing its information, including inputs, topology, outputs, and the errors.
 
 To build and run the project, use CMake:
