@@ -10,22 +10,23 @@ using namespace iris;
 Network::Network(vector<Layer> layers)
 {
     this->id = Utils::generateId();
-    this->layers = layers;
-    this->depth = this->layers.size();
+    this->globalError = 0.0;
 
-    for (Layer l : this->layers)
+    for (Layer l : layers)
     {
-        this->topology.push_back(l.getSize());
+        this->layers.push_back(l);
     }
 
-    for (int i = 0; i < this->topology.size() - 1; i++)
-    {
-        int currentTopology = this->topology.at(i);
-        int nextTopology = this->topology.at(i + 1);
+    this->depth = this->layers.size();
 
-        this->weights.push_back(Matrix(currentTopology, nextTopology, true));
-        this->gradients.push_back(Matrix(1, nextTopology, false));
-        this->deltas.push_back(Matrix(currentTopology, nextTopology, false));
+    for (int i = 0; i < this->layers.size() - 1; i++)
+    {
+        Layer currentLayer = this->layers.at(i);
+        Layer nextLayer = this->layers.at(i + 1);
+
+        this->weights.push_back(Matrix(currentLayer.getBiasedSize(), nextLayer.getSize(), true));
+        this->gradients.push_back(Matrix(1, nextLayer.getSize(), false));
+        this->deltas.push_back(Matrix(currentLayer.getBiasedSize(), nextLayer.getSize(), false));
     }
 }
 
@@ -83,6 +84,8 @@ void Network::feedForward()
 
         Matrix input = i != 0 ? currentLayer.getActivatedNeuronMatrix() : currentLayer.getNeuronMatrix();
         Matrix weights = this->weights.at(i);
+        // input.describe();
+        // weights.describe();
         Matrix result = input.multiply(weights);
 
         Layer& nextLayer = this->layers.at(i + 1);
@@ -153,9 +156,12 @@ void Network::propagateBackwards()
 
             Matrix& leftDeltas = this->deltas.at(l - 1);
 
+            vector<double> biasedInput = this->input;
+            biasedInput.push_back(1);
+
             leftDeltas = leftGradients
                              .transpose()
-                             .multiply(l == 1 ? Matrix::fromVector(this->input) : this->layers.at(l).getDerivedNeuronMatrix())
+                             .multiply(l == 1 ? Matrix::fromVector(biasedInput) : this->layers.at(l).getDerivedNeuronMatrix())
                              .transpose();
 
             for (int i = 0; i < leftWeights.getRows(); i++)

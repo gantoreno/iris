@@ -17,11 +17,13 @@ namespace iris
         double activatedValue;
         double derivedValue;
 
+        bool isBiasNode;
+
         void activate();
         void derive();
 
     public:
-        Neuron(double value);
+        Neuron(double value, bool isBiasNode = false);
 
         string getId();
 
@@ -74,15 +76,19 @@ namespace iris
         string id;
 
         int size;
+        int biasedSize;
+
+        bool isBiased;
 
         vector<Neuron> neurons;
 
     public:
-        Layer(int size);
+        Layer(int size, bool isBiased = false);
 
         string getId();
 
         int getSize();
+        int getBiasedSize();
 
         vector<Neuron> getNeurons();
 

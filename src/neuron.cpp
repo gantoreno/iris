@@ -4,13 +4,24 @@
 using namespace std;
 using namespace iris;
 
-Neuron::Neuron(double value)
+Neuron::Neuron(double value, bool isBiasNode)
 {
     this->id = Utils::generateId();
     this->rawValue = value;
+    this->isBiasNode = isBiasNode;
 
-    this->activate();
-    this->derive();
+    if (this->isBiasNode)
+    {
+        this->activatedValue = value;
+        this->derivedValue = value;
+    }
+    else
+    {
+        this->rawValue = value;
+
+        this->activate();
+        this->derive();
+    }
 }
 
 void Neuron::activate()
@@ -55,7 +66,8 @@ void Neuron::describe(int level)
 {
     string tabs = Utils::generateIndentation(level);
 
-    cout << tabs << "Neuron [\033[1;34m" << this->id << "\033[0m]" << endl;
+    cout << tabs << (this->isBiasNode ? "\033[1;36m(Bias) \033[0m" : "");
+    cout << "Neuron [\033[1;34m" << this->id << "\033[0m]" << endl;
     cout << tabs << "---" << endl;
     cout << tabs << "Raw value:       \033[35m" << this->rawValue << "\033[0m" << endl;
     cout << tabs << "Activated value: \033[35m" << this->activatedValue << "\033[0m" << endl;

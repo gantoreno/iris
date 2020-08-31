@@ -5,14 +5,21 @@
 using namespace std;
 using namespace iris;
 
-Layer::Layer(int size)
+Layer::Layer(int size, bool isBiased)
 {
     this->id = Utils::generateId();
     this->size = size;
+    this->isBiased = isBiased;
+    this->biasedSize = this->size + (this->isBiased ? 1 : 0);
 
     for (int i = 0; i < this->size; i++)
     {
-        this->neurons.push_back(Neuron(0.0));
+        this->neurons.push_back(Neuron(0.0, false));
+    }
+
+    if (this->isBiased)
+    {
+        this->neurons.push_back(Neuron(1.0, true));
     }
 }
 
@@ -26,6 +33,11 @@ int Layer::getSize()
     return this->size;
 }
 
+int Layer::getBiasedSize()
+{
+    return this->size + (this->isBiased ? 1 : 0);
+}
+
 vector<Neuron> Layer::getNeurons()
 {
     return this->neurons;
@@ -33,9 +45,9 @@ vector<Neuron> Layer::getNeurons()
 
 Matrix Layer::getNeuronMatrix()
 {
-    Matrix neuronMatrix = Matrix(1, this->size, false);
+    Matrix neuronMatrix = Matrix(1, this->biasedSize, false);
 
-    for (int i = 0; i < this->size; i++)
+    for (int i = 0; i < this->biasedSize; i++)
     {
         Neuron currentNeuron = this->neurons.at(i);
 
@@ -47,9 +59,9 @@ Matrix Layer::getNeuronMatrix()
 
 Matrix Layer::getActivatedNeuronMatrix()
 {
-    Matrix activatedNeuronMatrix = Matrix(1, this->size, false);
+    Matrix activatedNeuronMatrix = Matrix(1, this->biasedSize, false);
 
-    for (int i = 0; i < this->size; i++)
+    for (int i = 0; i < this->biasedSize; i++)
     {
         Neuron currentNeuron = this->neurons.at(i);
 
@@ -61,9 +73,9 @@ Matrix Layer::getActivatedNeuronMatrix()
 
 Matrix Layer::getDerivedNeuronMatrix()
 {
-    Matrix derivedNeuronMatrix = Matrix(1, this->size, false);
+    Matrix derivedNeuronMatrix = Matrix(1, this->biasedSize, false);
 
-    for (int i = 0; i < this->size; i++)
+    for (int i = 0; i < this->biasedSize; i++)
     {
         Neuron currentNeuron = this->neurons.at(i);
 
