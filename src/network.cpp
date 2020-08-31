@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <vector>
 #include "../include/iris.hpp"
 
@@ -87,9 +88,6 @@ void Network::feedForward()
 
         nextLayer.setValues(result.vectorize());
     }
-
-    this->calculateError();
-    this->propagateBackwards();
 }
 
 void Network::propagateBackwards()
@@ -194,6 +192,30 @@ void Network::calculateError()
     }
 
     this->historicalErrors.push_back(this->errors);
+}
+
+void Network::train(int epochs)
+{
+    for (int i = 0; i < epochs; i++)
+    {
+        string epochString = to_string(epochs);
+
+        this->feedForward();
+        this->calculateError();
+        this->propagateBackwards();
+
+        cout << "[ "
+             << "\033[1;33m"
+             << setw(epochString.length())
+             << i + 1
+             << "\033[0m"
+             << " ] Global error: \033[31m"
+             << this->globalError
+             << "\033[0m"
+             << endl;
+    }
+
+    cout << endl;
 }
 
 void Network::describe(int level)

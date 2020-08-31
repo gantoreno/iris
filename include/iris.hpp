@@ -118,6 +118,9 @@ namespace iris
 
         void calculateError();
 
+        void feedForward();
+        void propagateBackwards();
+
     public:
         Network(vector<Layer> layers);
 
@@ -134,8 +137,7 @@ namespace iris
         void setInput(vector<double> input);
         void setTarget(vector<double> target);
 
-        void feedForward();
-        void propagateBackwards();
+        void train(int epochs);
 
         void describe(int level = 0);
     };
