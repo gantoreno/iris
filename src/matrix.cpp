@@ -125,11 +125,17 @@ vector<double> iris::Matrix::getRow(int row)
     return this->values.at(row);
 }
 
-void Matrix::describe(int level)
+void Matrix::describe(int level, string name)
 {
     string tabs = Utils::generateIndentation(level);
 
-    cout << tabs << "Matrix [\033[1;32m" << this->id << "\033[0m]" << endl;
+    cout << tabs;
+
+    if (name != "")
+    {
+        cout << "\033[1;32m(" << name << ")\033[0m ";
+    }
+    cout << "Matrix [\033[1;32m" << this->id << "\033[0m]" << endl;
     cout << tabs << "---" << endl;
     cout << tabs << "Rows:    \033[35m" << this->rows << "\033[0m" << endl;
     cout << tabs << "Columns: \033[35m" << this->cols << "\033[0m" << endl;

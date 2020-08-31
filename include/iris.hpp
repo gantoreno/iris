@@ -67,7 +67,7 @@ namespace iris
 
         void setValue(int row, int col, double value);
 
-        void describe(int level = 0);
+        void describe(int level = 0, string name = "");
     };
 
     class Layer

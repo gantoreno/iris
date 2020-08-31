@@ -260,9 +260,9 @@ void Network::describe(int level)
 
         if (i < this->depth - 1)
         {
-            this->weights.at(i).describe(level + 1);
-            this->gradients.at(i).describe(level + 1);
-            this->deltas.at(i).describe(level + 1);
+            this->weights.at(i).describe(level + 1, "Weights");
+            this->gradients.at(i).describe(level + 1, "Gradients");
+            this->deltas.at(i).describe(level + 1, "Deltas");
         }
     }
 
