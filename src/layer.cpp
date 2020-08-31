@@ -101,7 +101,7 @@ void Layer::describe(int level)
 
     cout << tabs << "Layer [\033[1;33m" << this->id << "\033[0m]" << endl;
     cout << tabs << "---" << endl;
-    cout << tabs << "Size: \033[35m" << this->neurons.size() << "\033[0m" << endl;
+    cout << tabs << "Size: \033[35m" << this->size << "\033[0m" << (this->isBiased ? " + \033[1;36mbias\033[0m" : "") << endl;
     cout << tabs << "Neurons: [" << endl;
 
     for (Neuron neuron : this->neurons)
