@@ -15,6 +15,7 @@ Network::Network(vector<Layer> layers)
     for (Layer l : layers)
     {
         this->layers.push_back(l);
+        this->topology.push_back(l.getSize());
     }
 
     this->depth = this->layers.size();
@@ -84,8 +85,6 @@ void Network::feedForward()
 
         Matrix input = i != 0 ? currentLayer.getActivatedNeuronMatrix() : currentLayer.getNeuronMatrix();
         Matrix weights = this->weights.at(i);
-        // input.describe();
-        // weights.describe();
         Matrix result = input.multiply(weights);
 
         Layer& nextLayer = this->layers.at(i + 1);
