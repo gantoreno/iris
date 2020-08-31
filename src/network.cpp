@@ -1,6 +1,7 @@
 #include <iostream>
 #include <iomanip>
 #include <vector>
+#include <math.h>
 #include "../include/iris.hpp"
 
 using namespace std;
@@ -188,7 +189,7 @@ void Network::calculateError()
         double error = outputValue - expectedValue;
 
         this->errors.push_back(error);
-        this->globalError += error;
+        this->globalError += pow(error, 2) / 2;
     }
 
     this->historicalErrors.push_back(this->errors);
