@@ -44,3 +44,7 @@ $ cmake .
 $ make
 $ ./out/iris
 ```
+
+## License
+
+The iris engine is distributed under the [Apache 2.0 License](https://github.com/hollandsgabe/iris/blob/master/LICENSE.md)
