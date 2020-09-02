@@ -13,9 +13,9 @@ using namespace iris;
 
 int main(int argc, char** argv)
 {
-    Network inet({ Layer(3),
-                   Layer(2),
-                   Layer(3) });
+    Network inet = Network({ Layer(3),
+                             Layer(2),
+                             Layer(3) });
 
     inet.setInput({ 1, 0, 1 });
     inet.setTarget({ 1, 0, 1 });
