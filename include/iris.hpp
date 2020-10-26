@@ -156,6 +156,6 @@ namespace iris
         static string generateIndentation(int level);
         static double generateRandomNumber();
     };
-} // namespace iris
+}
 
 #endif
