@@ -154,6 +154,7 @@ namespace iris
     public:
         static string generateId();
         static string generateIndentation(int level);
+
         static double generateRandomNumber();
     };
 }
