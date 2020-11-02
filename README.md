@@ -31,7 +31,7 @@ int main(int argc, char** argv)
 Where:
 
 -   `Network` is the neural network engine, the constructor receives a vector of `Layer`.
--   `Layer` specifies a new layer, where `3`, `2` and `3` are the ammount of neurons inside each layer.
+-   `Layer` specifies a new layer, where `3`, `2` and `3` are the amount of neurons inside each layer.
 -   `setInput()` adds the input to the network, where `{0, 1, 3}` is the input vector.
 -   `setTarget()` sets the expected output, where `{3, 2, 4}` is the output vector.
 -   `train()` starts the training process, where `100` are the epochs, information will be displayed over each epoch showing the global error.
